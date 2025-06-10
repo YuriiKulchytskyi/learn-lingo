@@ -9,7 +9,7 @@ body {
   font-family: "Roboto", sans-serif;
   --primary-color: var(--yellow);
   --primary-color-light: var(--light-yellow);
-  background-color: #f8f8f8;
+  background-color: #cecccc;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Teacher } from "../Teacher/teacher";
 import style from "./TeachersList.module.scss";
 
-import { ref, get  } from "firebase/database";
+import { ref, get } from "firebase/database";
 import { database } from "../../firebase";
 
 const getTeachers = async () => {
@@ -10,8 +10,7 @@ const getTeachers = async () => {
     const snapshot = await get(ref(database, "teachers"));
     if (snapshot.exists()) {
       const data = snapshot.val();
-      // перетворення об'єкта у масив
-      return Object.values(data);
+      return Object.values(data); // перетворення об'єкта у масив
     } else {
       console.log("Дані відсутні");
       return [];
@@ -22,100 +21,71 @@ const getTeachers = async () => {
   }
 };
 
-
-
 export const TeacherList = () => {
-  const [languages, setLanguages] = useState([]);
-  const [levels, setLevels] = useState([]);
+  const [teachers, setTeachers] = useState([]);
   const [filteredTeachers, setFilteredTeachers] = useState([]);
-
-  // Зберігаємо вибрані фільтри у стані
   const [filters, setFilters] = useState({
     language: "",
     level: "",
     price: "",
   });
 
-
   useEffect(() => {
     const fetchData = async () => {
       const data = await getTeachers();
+      setTeachers(data);
       setFilteredTeachers(data);
     };
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   const allLanguages = new Set();
+  // Унікальні мови та рівні для фільтрів
+  const uniqueLanguages = Array.from(
+    new Set(teachers.flatMap((t) => t.languages))
+  );
+  const uniqueLevels = Array.from(new Set(teachers.flatMap((t) => t.levels)));
 
-  //   filteredTeachers.forEach((teacher) => {
-  //     teacher.languages.forEach((lang) => {
-  //       allLanguages.add(lang);
-  //     });
-  //   });
+  // Обробник зміни фільтрів
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
 
-  //   setLanguages(Array.from(allLanguages));
-  // }, []);
+  // Фільтрація викладачів при зміні фільтрів
+  useEffect(() => {
+    console.log(teachers);
+    
+    let filtered = [...teachers];
 
-  // useEffect(() => {
-  //   const uniqueLevels = Array.from(
-  //     new Set(filteredTeachers.flatMap((teacher) => teacher.levels))
-  //   );
-  //   setLevels(uniqueLevels);
-  // }, []);
+    if (filters.language) {
+      filtered = filtered.filter((t) => t.languages.includes(filters.language));
+    }
 
-  // useEffect(() => {
-  //   // Фільтрація при зміні filters
-  //   let filtered = filteredTeachers;
+    if (filters.level) {
+      filtered = filtered.filter((t) => t.levels.includes(filters.level));
+    }
 
-  //   if (filters.language) {
-  //     filtered = filtered.filter((teacher) =>
-  //       teacher.languages
-  //         .map((lang) => lang.toLowerCase())
-  //         .includes(filters.language)
-  //     );
-  //   }
+    if (filters.price) {
+      filtered = filtered.filter((t) => t.price_per_hour <= filters.price);
+    }
 
-  //   if (filters.level) {
-  //     filtered = filtered.filter((teacher) =>
-  //       teacher.levels
-  //         .map((level) => level.toLowerCase())
-  //         .includes(filters.level)
-  //     );
-  //   }
-
-  //   if (filters.price) {
-  //     filtered = filtered.filter(
-  //       (teacher) => teacher.price_per_hour <= parseInt(filters.price, 10)
-  //     );
-  //   }
-
-  //   setFilteredTeachers(filtered);
-  // }, [filters]);
-
-  // const handleSetFilters = (e) => {
-  //   const { name, value } = e.target;
-  //   setFilters((prev) => ({
-  //     ...prev,
-  //     [name]: value.toLowerCase(),
-  //   }));
-  // };
+    setFilteredTeachers(filtered);
+  }, [filters, teachers]);
 
   return (
     <div className={style.listWrapper}>
-      {/* <div className={style.filters}>
+      <div className={style.filters}>
         <label htmlFor="language" className={style.label}>
-          Languages
+          Language
           <select
             name="language"
-            id="language"
-            onChange={handleSetFilters}
             value={filters.language}
+            onChange={handleFilterChange}
           >
             <option value="">All languages</option>
-            {languages.map((language) => (
-              <option key={language} value={language.toLowerCase()}>
-                {language}
+            {uniqueLanguages.map((lang, idx) => (
+              <option key={idx} value={lang}>
+                {lang}
               </option>
             ))}
           </select>
@@ -125,47 +95,40 @@ export const TeacherList = () => {
           Level of knowledge
           <select
             name="level"
-            id="level"
-            onChange={handleSetFilters}
             value={filters.level}
+            onChange={handleFilterChange}
           >
             <option value="">All levels</option>
-            {levels.map((level) => (
-              <option key={level} value={level.toLowerCase()}>
-                {level}
+            {uniqueLevels.map((lvl, idx) => (
+              <option key={idx} value={lvl}>
+                {lvl}
               </option>
             ))}
           </select>
         </label>
 
         <label htmlFor="price" className={style.label}>
-          Price
+          Ціна
           <select
             name="price"
             id="price"
-            onChange={handleSetFilters}
             value={filters.price}
+            onChange={handleFilterChange}
           >
-            <option value="">No price filter</option>
-            <option value="25">25$</option>
-            <option value="30">30$</option>
-            <option value="35">35$</option>
-            <option value="40">40$</option>
+            <option value="">All prices</option>
+            <option value="25">20$</option>
+            <option value="30">25$</option>
+            <option value="35">30$</option>
+            <option value="40">35$</option>
           </select>
         </label>
-      </div> */}
+      </div>
 
-      <ul className={style.list}>
-        {filteredTeachers.length > 0 ? (
-          filteredTeachers.map((teacher) => (
-            <li key={teacher.name + teacher.surname}>
-              <Teacher teacher={teacher} />
-            </li>
-          ))
-        ) : (
-          <p>No teachers match the selected filters.</p>
-        )}
-      </ul>
+      <div className={style.list}>
+        {filteredTeachers.map((teacher, idx) => (
+          <Teacher key={idx} teacher={teacher} />
+        ))}
+      </div>
     </div>
   );
 };

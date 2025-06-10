@@ -3,7 +3,6 @@
   display: flex;
   flex-direction: row;
   gap: 48px;
-  border: 1px solid black;
   border-radius: 24px;
   padding: 24px;
   background-color: #fff;
@@ -79,25 +78,24 @@
     list-style: none;
     display: flex;
     flex-direction: row;
-    
+
     height: 24px;
     justify-content: space-between;
     width: 607px;
 
-    li{
+    li {
       position: relative;
       display: flex;
       flex-direction: row;
       align-items: start;
 
-
-      span{
-        color:#38cd3e
+      span {
+        color: #38cd3e;
       }
     }
 
-    li:not(:nth-child(1)):before{
-      content: '';
+    li:not(:nth-child(1)):before {
+      content: "";
       position: absolute;
       width: 0px;
       height: 16px;
@@ -110,8 +108,6 @@
       height: 16px;
       margin: 0;
     }
-
-    
   }
 }
 
@@ -142,6 +138,10 @@
   display: flex;
   flex-direction: column;
   gap: 32px;
+
+  p{
+    max-width: 800px;
+  }
 
   ul {
     list-style: none;
@@ -190,13 +190,26 @@
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  background-color: var(--light-yellow);
+  background-color: var(--primary-color);
+  font-weight: 700;
+  border: none;
+}
+
+.bookLight {
+  width: 232px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background-color: var(--primary-color-light);
   font-weight: 700;
   border: none;
 }
 
 .book:hover {
-  background-color: var(--primary-color);
+  cursor: pointer;
+  transform: scale(1.1);
   transition: 0.3s;
 }
 

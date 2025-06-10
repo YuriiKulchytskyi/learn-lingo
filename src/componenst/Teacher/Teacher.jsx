@@ -1,9 +1,12 @@
 import { useState } from "react";
 import style from "./Teacher.module.scss";
 import { Review } from "./Review";
+import { useSelector } from "react-redux";
 
 export const Teacher = ({ teacher }) => {
   const [open, setOpen] = useState(false);
+
+  const loggedIn = useSelector((state) => state.auth.auth);
 
   const handleOpen = () => {
     setOpen(!open);
@@ -36,7 +39,8 @@ export const Teacher = ({ teacher }) => {
               <li>Lessons done: {teacher.lessons_done}</li>
               <li>Rating: {teacher.rating}</li>
               <li>
-                Price / 1 hour: {teacher.price_per_hour}<span>$</span>
+                Price / 1 hour: {teacher.price_per_hour}
+                <span>$</span>
               </li>
             </ul>
             <button className={style.heartBtn}>X</button>
@@ -45,7 +49,9 @@ export const Teacher = ({ teacher }) => {
         <ul className={style.teacherInfo}>
           <li>
             <span>Speaks: </span>
-            <span className={style.underlinedSpan}>{teacher.languages.join(", ")}</span>
+            <span className={style.underlinedSpan}>
+              {teacher.languages.join(", ")}
+            </span>
           </li>
           <li>
             <span>Lesson Info:</span>
@@ -64,18 +70,17 @@ export const Teacher = ({ teacher }) => {
           ) : (
             <div className={style.descrriptionReviews}>
               <p className={style.description} onClick={handleOpen}>
-              {teacher.experience}
-            </p>
+                {teacher.experience}
+              </p>
 
-            <ul className={style.reviews}>
-              {teacher.reviews.map((review, index) => (
-                <li key={index}>
-                  <Review review={review} />
-                </li>
-              ))}
-            </ul>
+              <ul className={style.reviews}>
+                {teacher.reviews.map((review, index) => (
+                  <li key={index}>
+                    <Review review={review} />
+                  </li>
+                ))}
+              </ul>
             </div>
-
           )}
           <div className={style.commentsWrapper}></div>
         </div>
@@ -87,7 +92,11 @@ export const Teacher = ({ teacher }) => {
               </li>
             ))}
           </ul>
-          {open && <button className={style.book}>Book trial lesson</button>}
+          {open && (
+            <button className={loggedIn ? style.book : style.bookLight} disabled={!loggedIn}>
+              {loggedIn ? `Book trial lesson`: `Log in first` }
+            </button>
+          )}
         </div>
       </div>
     </div>
