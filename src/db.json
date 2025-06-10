@@ -1,4 +1,4 @@
-[
+{"teachers" :[
   {
     "name": "John",
     "surname": "Doe",
@@ -912,3 +912,4 @@
     "experience": "William has been teaching Mandarin Chinese for 6 years. He has extensive experience in language instruction and is dedicated to helping students develop a strong foundation in Mandarin. William's lessons are engaging and effective, combining interactive activities and effective teaching methods. His teaching approach focuses on building language skills, improving fluency, and enhancing comprehension. With his patient and supportive teaching style, William creates a positive learning environment that fosters rapid progress and confidence in Mandarin Chinese."
   }
 ]
+}

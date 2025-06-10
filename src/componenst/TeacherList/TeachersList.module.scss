@@ -1,6 +1,42 @@
-.list{
+.listWrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  row-gap: 32px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  list-style: none;
+}
+
+.filters {
+  display: flex;
+  flex-direction: row;
+  column-gap: 20px;
+
+  .label {
     display: flex;
     flex-direction: column;
-    gap: 32px;
-    list-style: none;
+    row-gap: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    color: #8A8A89;
+
+
+    select {
+      border-radius: 14px;
+      border: none;
+      padding: 15px 8px;
+
+      :focus {
+        border: 1px solid var(--primary-color);
+      }
+    }
+  }
 }

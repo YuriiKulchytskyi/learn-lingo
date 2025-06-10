@@ -1,23 +1,29 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body{
+body {
+  /* width: 1440px; */
   font-family: "Roboto", sans-serif;
   --primary-color: var(--yellow);
+  --primary-color-light: var(--light-yellow);
+  background-color: #f8f8f8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-:root{
-  --yellow:#F4C550;
-  --light-yellow:#FBE9BA;
-  --green:#9FBAAE;
-  --light-green:#CBDED3;
-  --blue:#9FB7CE;
-  --light-blue:#BFD6EA;
-  --pink:#E0A39A;
-  --light-pink:#F2C0BD;
-  --orange:#F0AA8D;
-  --light-orange:#F4C8BA;
+:root {
+  --yellow: #f4c550;
+  --light-yellow: #fbe9ba;
+  --green: #9fbaae;
+  --light-green: #cbded3;
+  --blue: #9fb7ce;
+  --light-blue: #bfd6ea;
+  --pink: #e0a39a;
+  --light-pink: #f2c0bd;
+  --orange: #f0aa8d;
+  --light-orange: #f4c8ba;
 }
