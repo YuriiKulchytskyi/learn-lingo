@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { CiLogin } from "react-icons/ci";
 
 import { AuthDetails } from "../auth/AuthDetails";
-import { database } from "../../firebase";
+// import { database } from "../../firebase";
 
 export const Header = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -16,7 +16,7 @@ export const Header = () => {
 
   const isLoggedIn = useSelector((state) => state.auth.auth);
 
-  console.log(database);
+  // console.log(database);
 
   const handleCloseModal = () => {
     setOpenModal(false);

@@ -16,18 +16,12 @@ export const LogInForm = ({ onClick }) => {
   const handleLogIn = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
-      .then((user) => {
-        console.log(user);
+      .then(() => {
         setEmail("");
         setPassword("");
         onClick();
         dispatch(setAuth());
         localStorage.setItem("isAuth", "true");
-
-        if(user){
-          console.log(user);
-          
-        }
 
         toast.success(`Welcome ${email}`);
       })
