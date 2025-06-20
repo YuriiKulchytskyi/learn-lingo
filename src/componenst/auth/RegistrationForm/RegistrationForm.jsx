@@ -2,6 +2,7 @@ import { useState } from "react";
 import style from "./RegistrationForm.module.scss";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../../firebase";
+import { toast } from "react-toastify";
 
 export const RegistrationForm = ({ onClick }) => {
   const [name, setName] = useState("");
@@ -24,14 +25,19 @@ export const RegistrationForm = ({ onClick }) => {
         });
       })
       .then(() => {
-        console.log("User registered and name updated.");
+        toast.success(`User ${name} registered.`);
         setName("");
         setEmail("");
         setPassword("");
       })
-      .catch((error) => console.error("Registration error:", error.message));
+      .catch((error) => {
+        toast.error("Registration error:", error.message);
+        setName("");
+        setEmail("");
+        setPassword("");
+      });
 
-      onClick()
+    onClick();
   };
 
   return (

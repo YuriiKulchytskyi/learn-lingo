@@ -1,0 +1,72 @@
+.dashboard {
+  width: 100%;
+  max-width: 80%;
+  margin: 40px auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.infoWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+}
+
+.photo {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color-light);
+  border-radius: 50%;
+}
+
+.profileInfo {
+  width: calc(100% - 200px - 32px);
+  background-color: #f4f4f4;
+  padding: 1.5rem;
+  border-radius: 10px;
+  line-height: 1.6;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.editButton {
+  background-color: #ffc107;
+  color: #333;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.logoutButton {
+  background-color: #dc3545;
+  color: white;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.editButton:hover,
+.logoutButton:hover {
+  opacity: 0.9;
+}

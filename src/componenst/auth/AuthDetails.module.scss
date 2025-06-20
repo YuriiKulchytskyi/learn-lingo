@@ -1,0 +1,29 @@
+.buttons {
+  display: flex;
+  flex-direction: row;
+  column-gap: 20px;
+  button {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    transition: 0.3s;
+    column-gap: 4px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      transition: 0.3s;
+    }
+
+    svg:hover {
+      fill: var(--primary-color);
+      transform: scale(1.05);
+    }
+  }
+
+  button:hover {
+    color: var(--primary-color);
+  }
+}

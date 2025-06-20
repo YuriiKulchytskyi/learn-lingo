@@ -2,21 +2,62 @@ import { useState } from "react";
 import style from "./Teacher.module.scss";
 import { Review } from "./Review";
 import { useSelector } from "react-redux";
+import { FiBookOpen } from "react-icons/fi";
+import { FaStar } from "react-icons/fa";
+import { CiHeart } from "react-icons/ci";
+import { FaHeart } from "react-icons/fa6";
+import { ref, update } from "firebase/database";
+import { database } from "../../firebase";
 
-export const Teacher = ({ teacher }) => {
+import { auth } from "../../firebase";
+
+export const Teacher = ({ teacher = {}, teacherId }) => {
+  const {
+    like = false,
+    avatar_url = "",
+    name = "",
+    surname = "",
+    lessons_done = 0,
+    rating = 0,
+    price_per_hour = 0,
+    languages = [],
+    lesson_info = "",
+    conditions = [],
+    experience = "",
+    reviews = [],
+    levels = [],
+  } = teacher;
+
+  const user = auth.currentUser;
+
   const [open, setOpen] = useState(false);
+  const [liked, setLiked] = useState(like);
 
   const loggedIn = useSelector((state) => state.auth.auth);
 
-  const handleOpen = () => {
-    setOpen(!open);
+  const handleOpen = () => setOpen(!open);
+
+  const handleLikeToggle = async () => {
+    if (user) {
+      try {
+        const newLikeStatus = !liked;
+        const teacherRef = ref(database, `teachers/${teacherId}`);
+        await update(teacherRef, { like: newLikeStatus });
+        setLiked(newLikeStatus);
+      } catch (error) {
+        console.error("Like", error);
+      }
+    }
+    else{
+      alert('Log in first')
+    }
   };
 
   return (
     <div className={style.teacherWrapper}>
       <div className={style.teacherImgWrapper}>
         <div className={style.teacherImg}>
-          <img src={teacher.avatar_url} loading="lazy" alt={teacher.name} />
+          <img src={avatar_url} loading="lazy" alt={`${name} ${surname}`} />
         </div>
       </div>
       <div className={style.teacherInfoWrapper}>
@@ -24,42 +65,48 @@ export const Teacher = ({ teacher }) => {
           <div className={style.name}>
             <p className={style.p}>Language</p>
             <h2 className={style.teacherName}>
-              {teacher.name} {teacher.surname}
+              {name} {surname}
             </h2>
           </div>
 
           <div className={style.productivity}>
             <ul className={style.productivityList}>
               <li>
-                <svg>
-                  <use></use>
-                </svg>
+                <FiBookOpen />
                 Lessons online
               </li>
-              <li>Lessons done: {teacher.lessons_done}</li>
-              <li>Rating: {teacher.rating}</li>
+              <li>Lessons done: {lessons_done}</li>
               <li>
-                Price / 1 hour: {teacher.price_per_hour}
+                <FaStar style={{ fill: "yellow" }} />
+                Rating: {rating}
+              </li>
+              <li>
+                Price / 1 hour: {price_per_hour}
                 <span>$</span>
               </li>
             </ul>
-            <button className={style.heartBtn}>X</button>
+            <button className={style.heartBtn} onClick={handleLikeToggle}>
+              {liked ? <FaHeart /> : <CiHeart />}
+            </button>
           </div>
         </div>
         <ul className={style.teacherInfo}>
           <li>
             <span>Speaks: </span>
             <span className={style.underlinedSpan}>
-              {teacher.languages.join(", ")}
+              {Array.isArray(languages) && languages.length > 0
+                ? languages.join(", ")
+                : "none"}
             </span>
           </li>
           <li>
-            <span>Lesson Info:</span>
-            {teacher.lesson_info}
+            <span>Lesson Info:</span> {lesson_info || "No info"}
           </li>
           <li>
-            <span>Conditions:</span>
-            {teacher.conditions.join(" ")}
+            <span>Conditions:</span>{" "}
+            {Array.isArray(conditions) && conditions.length > 0
+              ? conditions.join(" ")
+              : "none"}
           </li>
         </ul>
         <div>
@@ -70,15 +117,19 @@ export const Teacher = ({ teacher }) => {
           ) : (
             <div className={style.descrriptionReviews}>
               <p className={style.description} onClick={handleOpen}>
-                {teacher.experience}
+                {experience || "No experience info"}
               </p>
 
               <ul className={style.reviews}>
-                {teacher.reviews.map((review, index) => (
-                  <li key={index}>
-                    <Review review={review} />
-                  </li>
-                ))}
+                {Array.isArray(reviews) && reviews.length > 0 ? (
+                  reviews.map((review, index) => (
+                    <li key={index}>
+                      <Review review={review} />
+                    </li>
+                  ))
+                ) : (
+                  <li>No reviews yet</li>
+                )}
               </ul>
             </div>
           )}
@@ -86,15 +137,22 @@ export const Teacher = ({ teacher }) => {
         </div>
         <div className={style.leveslBook}>
           <ul className={style.levels}>
-            {teacher.levels.map((level) => (
-              <li key={level}>
-                <span>#{level}</span>
-              </li>
-            ))}
+            {Array.isArray(levels) && levels.length > 0 ? (
+              levels.map((level) => (
+                <li key={level}>
+                  <span>#{level}</span>
+                </li>
+              ))
+            ) : (
+              <li>No levels specified</li>
+            )}
           </ul>
           {open && (
-            <button className={loggedIn ? style.book : style.bookLight} disabled={!loggedIn}>
-              {loggedIn ? `Book trial lesson`: `Log in first` }
+            <button
+              className={loggedIn ? style.book : style.bookLight}
+              disabled={!loggedIn}
+            >
+              {loggedIn ? `Book trial lesson` : `Log in first`}
             </button>
           )}
         </div>

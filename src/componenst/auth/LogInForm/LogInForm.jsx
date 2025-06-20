@@ -4,6 +4,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../firebase";
 import { setAuth } from "../../../redux/auth/authSlice";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 export const LogInForm = ({ onClick }) => {
   const dispatch = useDispatch();
@@ -21,9 +23,23 @@ export const LogInForm = ({ onClick }) => {
         onClick();
         dispatch(setAuth());
         localStorage.setItem("isAuth", "true");
+
+        if(user){
+          console.log(user);
+          
+        }
+
+        toast.success(`Welcome ${email}`);
       })
-      .catch((error) => console.error("Error", error));
+      .catch((error) => {
+        console.error("Error", error);
+        setEmail("");
+        setPassword("");
+        toast.error("Entrance error");
+      });
   };
+
+
 
   return (
     <form className={style.registrationWrapper}>

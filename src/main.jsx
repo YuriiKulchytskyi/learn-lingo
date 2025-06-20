@@ -8,6 +8,8 @@ import { TeacherPage } from "./pages/TeacherPage.jsx";
 import { MainPage } from "./pages/MainPage.jsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.js";
+import { UserPage } from "./pages/UserPage.jsx";
+
 
 const router = createHashRouter([
   {
@@ -16,6 +18,7 @@ const router = createHashRouter([
     children: [
       { index: true, element: <MainPage /> },
       { path: "teachers", element: <TeacherPage /> },
+      { path: "user/:id", element: <UserPage /> },
     ],
   },
 ]);
@@ -23,7 +26,7 @@ const router = createHashRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </Provider>
   </StrictMode>
 );

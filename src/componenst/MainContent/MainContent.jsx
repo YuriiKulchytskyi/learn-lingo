@@ -1,6 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import style from "./MainContent.module.scss";
 
 export const MainContent = () => {
+
+  const navigate = useNavigate()
+
+
   return (
     <section className={style.mainWrapper}>
       <div className={style.getStartedPic}>
@@ -15,7 +20,7 @@ export const MainContent = () => {
               connecting with highly qualified and experienced tutors.
             </p>
           </div>
-          <button>Get started</button>
+          <button onClick={() => navigate('/teachers')}>Get started</button>
         </div>
         <div className={style.pic}></div>
       </div>

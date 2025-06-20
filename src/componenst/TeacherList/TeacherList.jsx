@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
-import { Teacher } from "../Teacher/teacher";
+import { Teacher } from "../Teacher/Teacher";
 import style from "./TeachersList.module.scss";
 
 import { ref, get } from "firebase/database";
 import { database } from "../../firebase";
+
 
 const getTeachers = async () => {
   try {
     const snapshot = await get(ref(database, "teachers"));
     if (snapshot.exists()) {
       const data = snapshot.val();
-      return Object.values(data); // перетворення об'єкта у масив
+      return Object.entries(data).map(([id, teacher]) => ({ id, ...teacher }));
     } else {
-      console.log("Дані відсутні");
+      console.log("No data");
       return [];
     }
   } catch (error) {
-    console.error("Помилка при отриманні даних:", error);
+    console.error("Receiving data error:", error);
     return [];
   }
 };
@@ -39,34 +40,46 @@ export const TeacherList = () => {
     fetchData();
   }, []);
 
-  // Унікальні мови та рівні для фільтрів
   const uniqueLanguages = Array.from(
-    new Set(teachers.flatMap((t) => t.languages))
+    new Set(
+      teachers.flatMap((t) =>
+        Array.isArray(t.languages) ? t.languages : []
+      )
+    )
   );
-  const uniqueLevels = Array.from(new Set(teachers.flatMap((t) => t.levels)));
 
-  // Обробник зміни фільтрів
+  const uniqueLevels = Array.from(
+    new Set(
+      teachers.flatMap((t) =>
+        Array.isArray(t.levels) ? t.levels : []
+      )
+    )
+  );
+
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Фільтрація викладачів при зміні фільтрів
   useEffect(() => {
-    console.log(teachers);
-    
     let filtered = [...teachers];
 
     if (filters.language) {
-      filtered = filtered.filter((t) => t.languages.includes(filters.language));
+      filtered = filtered.filter(
+        (t) => Array.isArray(t.languages) && t.languages.includes(filters.language)
+      );
     }
 
     if (filters.level) {
-      filtered = filtered.filter((t) => t.levels.includes(filters.level));
+      filtered = filtered.filter(
+        (t) => Array.isArray(t.levels) && t.levels.includes(filters.level)
+      );
     }
 
     if (filters.price) {
-      filtered = filtered.filter((t) => t.price_per_hour <= filters.price);
+      filtered = filtered.filter(
+        (t) => t.price_per_hour <= Number(filters.price)
+      );
     }
 
     setFilteredTeachers(filtered);
@@ -108,7 +121,7 @@ export const TeacherList = () => {
         </label>
 
         <label htmlFor="price" className={style.label}>
-          Ціна
+          Price
           <select
             name="price"
             id="price"
@@ -125,9 +138,13 @@ export const TeacherList = () => {
       </div>
 
       <div className={style.list}>
-        {filteredTeachers.map((teacher, idx) => (
-          <Teacher key={idx} teacher={teacher} />
-        ))}
+        {filteredTeachers.length > 0 ? (
+          filteredTeachers.map((teacher) => (
+            <Teacher key={teacher.id} teacherId={teacher.id} teacher={teacher} />
+          ))
+        ) : (
+          <p>No teachers found.</p>
+        )}
       </div>
     </div>
   );

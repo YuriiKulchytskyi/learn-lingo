@@ -1,7 +1,9 @@
+import { useMemo } from "react"
 import { TeacherList } from "../componenst/TeacherList/TeacherList"
 
 export const TeacherPage = () => {
-  return (
-    <TeacherList />
-)
+
+  const memorizedTeachers = useMemo(() => <TeacherList/>, [])
+
+  return memorizedTeachers
 }

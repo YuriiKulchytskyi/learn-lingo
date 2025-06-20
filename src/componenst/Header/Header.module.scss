@@ -1,26 +1,79 @@
 .header {
-//   width: 100%;
+  //   width: 100%;
   height: 48px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-    margin: 20px 128px;
-    gap: 268px;
+  margin: 20px 128px;
+  gap: 268px;
 }
 
 .logoMenu {
   display: flex;
   flex-direction: row;
   column-gap: 390px;
+
+  .logo {
+    cursor: default;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    .logoCircle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+
+      .one {
+        width: 100%;
+        height: 50%;
+        border-top-left-radius: 100px;
+        border-top-right-radius: 100px;
+        background-color: #338af3;
+      }
+      .two {
+        width: 100%;
+        height: 50%;
+        border-bottom-left-radius: 100px;
+        border-bottom-right-radius: 100px;
+        background-color: #ffda44;
+      }
+    }
+  }
+
   nav {
     display: flex;
     flex-direction: row;
     column-gap: 28px;
+    align-items: center;
     a {
       text-transform: capitalize;
       text-decoration: none;
       color: black;
+      position: relative;
+    }
+    // a:hover {
+    //   // font-size: larger;
+    //   transition: 0.3s;
+    // }
+    a:after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: var(--primary-color);
+      transition-duration: 0.3s;
+    }
+
+    a:hover:after {
+      width: 100%;
+      transition: 0.3s;
     }
   }
 }
@@ -42,6 +95,29 @@
     background-color: transparent;
     align-items: center;
     justify-content: center;
+    position: relative;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--primary-color);
+    }
+  }
+
+  .logIn::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 5px;
+    left: 0;
+    background-color: var(--primary-color);
+    transition-duration: 0.3s;
+  }
+
+  .logIn:hover:after {
+    width: 100%;
+    transition-duration: 0.3s;
   }
 
   .registration {
@@ -53,5 +129,14 @@
     padding: 16px 8px;
     border-radius: 12px;
     width: 166px;
+    transition-duration: 0.3s;
+    border: none;
+  }
+
+  .registration:hover {
+    transform: scale(1.05);
+    background-color: var(--primary-color);
+    color: black;
+    transition-duration: 0.3s;
   }
 }

@@ -9,9 +9,21 @@
 }
 
 .heartBtn {
-  //   position: absolute;
-  height: 24px;
-  width: 24px;
+  border: none;
+  background-color: transparent;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  svg {
+    width: 24px;
+    height: 24px;
+    transition: .3s;
+  }
+
+  svg:hover{
+    transform: scale(1.15);
+    fill: red
+  }
 }
 
 .teacherImgWrapper {
@@ -71,7 +83,7 @@
   flex-direction: row;
   width: 697px;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   height: 24px;
 
   .productivityList {
@@ -87,7 +99,8 @@
       position: relative;
       display: flex;
       flex-direction: row;
-      align-items: start;
+      align-items: center;
+      column-gap: 8px;
 
       span {
         color: #38cd3e;
@@ -139,7 +152,7 @@
   flex-direction: column;
   gap: 32px;
 
-  p{
+  p {
     max-width: 800px;
   }
 
